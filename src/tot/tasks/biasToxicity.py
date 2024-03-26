@@ -13,7 +13,7 @@ class BiasToxicityTask(Task):
     Input Example: 
     Output Example: 
     """
-    def __init__(self, file='data_100_random_text_stereotyped.txt'):
+    def __init__(self, file='data_bias.txt'):
         """
         file: a text file, each line is some sentences
         """
