@@ -18,7 +18,7 @@ class BiasToxicityTask(Task):
         file: a text file, each line is some sentences
         """
         super().__init__()
-        path = os.path.join(DATA_PATH, 'text', file)
+        path = os.path.join(DATA_PATH, 'biasToxicity', file)
         self.data = open(path).readlines()
         self.steps = 2
         self.stops = ['\nPassage:\n', None]
