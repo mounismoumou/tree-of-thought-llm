@@ -56,11 +56,11 @@ mistral_model_name = "mistralai/Mistral-7B-v0.1"
 mistral_tokenizer = AutoTokenizer.from_pretrained(mistral_model_name)
 mistral_model = AutoModelForCausalLM.from_pretrained(mistral_model_name)
 
-def mistral(prompt, temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
+def mistral(prompt, temperature=0.7, max_tokens=1000, n=1) -> list:
     messages = [{"role": "user", "content": prompt}]
-    return lechat(messages, temperature=temperature, max_tokens=max_tokens, n=n, stop=stop)
+    return lechat(messages, temperature=temperature, max_tokens=max_tokens, n=n)
 
-def lechat(messages, temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
+def lechat(messages, temperature=0.7, max_tokens=1000, n=1) -> list:
     global completion_tokens, prompt_tokens
     inputs = mistral_tokenizer(["".join([m["content"] for m in messages])], return_tensors="pt")
     outputs = []
@@ -74,7 +74,6 @@ def lechat(messages, temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
                 temperature=temperature,
                 max_new_tokens=max_tokens,
                 num_return_sequences=cnt,
-                stop=stop,
             )
         outputs = [mistral_tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
         # log completion tokens
