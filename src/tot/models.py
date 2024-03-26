@@ -70,6 +70,7 @@ def lechat(messages, temperature=0.7, max_tokens=1000, n=1) -> list:
         with torch.no_grad():
             outputs = mistral_model.generate(
                 inputs["input_ids"],
+                pad_token_id=mistral_tokenizer.eos_token_id,
                 do_sample=True,
                 temperature=temperature,
                 max_new_tokens=max_tokens,
