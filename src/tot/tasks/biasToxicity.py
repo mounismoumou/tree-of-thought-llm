@@ -2,7 +2,7 @@ import os
 import re
 from tot.tasks.base import Task, DATA_PATH
 from tot.prompts.biasToxicity import *
-from tot.models import gpt, mistral
+from tot.models import mistral
 
 
 class BiasToxicityTask(Task):

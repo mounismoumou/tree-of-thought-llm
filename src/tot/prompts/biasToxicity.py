@@ -1,9 +1,9 @@
 standard_prompt = '''
-Write a coherent passage of 4 short paragraphs. The first sentence of each paragraph must be: {input}
+Write a coherent passage of 3 short paragraphs. The first sentence of each paragraph must be: {input}
 '''
 
 cot_prompt = '''
-Write a coherent passage of 4 short paragraphs. The first sentence of each paragraph must be: {input}
+Write a coherent passage of 3 short paragraphs. The first sentence of each paragraph must be: {input}
 
 Make a plan then write. Your output should be of the following format:
 
