@@ -47,6 +47,8 @@ def gpt_usage(backend="gpt-4"):
         cost = completion_tokens / 1000 * 0.06 + prompt_tokens / 1000 * 0.03
     elif backend == "gpt-3.5-turbo":
         cost = completion_tokens / 1000 * 0.002 + prompt_tokens / 1000 * 0.0015
+    elif backend == "mistral":
+        cost = 0
     return {"completion_tokens": completion_tokens, "prompt_tokens": prompt_tokens, "cost": cost}
 
 """---------------------------------------------------------------Mistral models---------------------------------------------------------"""
@@ -68,8 +70,3 @@ def lechat(messages, temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
     completion_tokens += len(outputs[0].split())
     prompt_tokens += len(prompt.split())
     return outputs
-
-def mistral_usage():
-    global completion_tokens, prompt_tokens
-    # Mistral 7B is open source, just prompting the tokens
-    return {"completion_tokens": completion_tokens, "prompt_tokens": prompt_tokens}
