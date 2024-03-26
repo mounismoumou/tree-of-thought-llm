@@ -48,7 +48,7 @@ def get_samples(task, x, y, n_generate_sample, prompt_sample, stop):
 
 def solve(args, task, idx, to_print=True):
     global mistral
-    mistral = partial(mistral, model=args.backend, temperature=args.temperature)
+    mistral = partial(mistral, temperature=args.temperature)
     print(mistral)
     x = task.get_input(idx)  # input
     ys = ['']  # current output candidates
