@@ -3,7 +3,7 @@ import json
 import argparse
 
 from tot.tasks import get_task
-from tot.methods.bfs_gpt import solve, naive_solve
+from tot.methods.bfs import solve, naive_solve
 from tot.models import gpt_usage
 
 def run(args):
