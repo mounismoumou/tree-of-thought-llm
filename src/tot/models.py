@@ -57,16 +57,27 @@ mistral_tokenizer = AutoTokenizer.from_pretrained(mistral_model_name)
 mistral_model = AutoModelForCausalLM.from_pretrained(mistral_model_name)
 
 def mistral(prompt, temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
-    inputs = mistral_tokenizer.encode(prompt, return_tensors="pt")
-    outputs = mistral_model.generate(inputs, max_length=inputs.shape[1] + max_tokens, temperature=temperature, do_sample=True, top_p=0.9, n=n, pad_token_id=mistral_tokenizer.eos_token_id, stop=stop)
-    outputs = [mistral_tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
-    return outputs
+    messages = [{"role": "user", "content": prompt}]
+    return lechat(messages, temperature=temperature, max_tokens=max_tokens, n=n, stop=stop)
 
 def lechat(messages, temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
     global completion_tokens, prompt_tokens
-    prompt = "\n".join([f"{message['role']}: {message['content']}" for message in messages])
-    outputs = mistral(prompt, temperature=temperature, max_tokens=max_tokens, n=n, stop=stop)
-    # log completion tokens
-    completion_tokens += len(outputs[0].split())
-    prompt_tokens += len(prompt.split())
+    inputs = mistral_tokenizer(["".join([m["content"] for m in messages])], return_tensors="pt")
+    outputs = []
+    while n > 0:
+        cnt = min(n, 20)
+        n -= cnt
+        with torch.no_grad():
+            outputs = mistral_model.generate(
+                inputs["input_ids"],
+                do_sample=True,
+                temperature=temperature,
+                max_new_tokens=max_tokens,
+                num_return_sequences=cnt,
+                stop=stop,
+            )
+        outputs = [mistral_tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
+        # log completion tokens
+        completion_tokens += len(outputs[0].split())
+        prompt_tokens += len(" ".join([m["content"] for m in messages]).split())
     return outputs
