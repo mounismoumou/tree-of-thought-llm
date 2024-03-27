@@ -5,6 +5,7 @@ import argparse
 from tot.tasks import get_task
 from tot.methods.bfs import solve, naive_solve
 from tot.models import gpt_usage
+from tot.tasks.game24 import Game24Task
 
 def run(args):
     task = get_task(args.task)
@@ -64,6 +65,13 @@ def parse_args():
 
 
 if __name__ == '__main__':
-    args = parse_args()
+    """args = parse_args()
     print(args)
     run(args)
+    args = argparse.Namespace(backend='gpt-4', temperature=0.7, task='game24', naive_run=False, prompt_sample=None, method_generate='propose', method_evaluate='value', method_select='greedy', n_generate_sample=1, n_evaluate_sample=3, n_select_sample=5)
+    """
+    args = argparse.Namespace(backend='mistral', temperature=0.7, task='game24', naive_run=False, prompt_sample=None, method_generate='propose', method_evaluate='value', method_select='greedy', n_generate_sample=1, n_evaluate_sample=3, n_select_sample=5)
+
+    task = Game24Task()
+    ys, infos = solve(args, task, 900)
+    print(ys[0])
